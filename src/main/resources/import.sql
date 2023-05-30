@@ -1,0 +1,4 @@
+INSERT INTO tb_visitor (document, full_name, gender, contact_number, company, create_date, observation, blocked, photo_url) VALUES ('12345678910','Bruno Moura Soares','Male','12345678910','',NOW(),'',false,'');
+INSERT INTO tb_visitor (document, full_name, gender, contact_number, company, create_date, observation, blocked, photo_url) VALUES ('12345678911','Jose Carlos Porto Soares','Male','12345678910','',NOW(),'',false,'');
+INSERT INTO tb_visitor (document, full_name, gender, contact_number, company, create_date, observation, blocked, photo_url) VALUES ('12345678912','Vera Lucia Moura Soares','Female','12345678910','',NOW(),'',false,'');
+INSERT INTO tb_visitor (document, full_name, gender, contact_number, company, create_date, observation, blocked, photo_url) VALUES ('12345678913','Douglas Moura Soares','Male','12345678910','',NOW(),'',false,'');
