@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.myaccessweb.dtos.VisitorDTO;
+import com.myaccessweb.dtos.VisitorUpdateDTO;
 import com.myaccessweb.models.Visitor;
 import com.myaccessweb.services.VisitorService;
 
@@ -58,6 +59,7 @@ public class VisitorController {
         var visitor = new Visitor();
         BeanUtils.copyProperties(visitorDTO, visitor);
         visitor.setCreateDate(LocalDateTime.now(ZoneId.of("UTC")));
+        visitor.setUpdateDate(null);
         visitor.setBlocked(false);
         visitorService.setVisitor(visitor);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(visitor.getId()).toUri();
@@ -75,15 +77,17 @@ public class VisitorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateVisitor(@PathVariable Long id, @RequestBody @Valid VisitorDTO visitorDTO) {
+    public ResponseEntity<Object> updateVisitor(@PathVariable Long id, @RequestBody @Valid VisitorUpdateDTO visitorUpdateDTO) {
         Optional<Visitor> visitorOptional = visitorService.getOneVisitor(id);
         if (!visitorOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Visitor not found!");
         }
         var visitor = new Visitor();
-        BeanUtils.copyProperties(visitorDTO, visitor);
+        BeanUtils.copyProperties(visitorUpdateDTO, visitor);
         visitor.setId(visitorOptional.get().getId());
+        visitor.setDocument(visitorOptional.get().getDocument());
         visitor.setCreateDate(visitorOptional.get().getCreateDate());
+        visitor.setUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
         return ResponseEntity.status(HttpStatus.OK).body(visitorService.setVisitor(visitor));
     }
 }
