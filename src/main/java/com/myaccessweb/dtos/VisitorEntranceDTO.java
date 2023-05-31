@@ -1,10 +1,9 @@
 package com.myaccessweb.dtos;
 
 import java.io.Serializable;
-import java.time.Instant;
 
-import com.myaccessweb.models.VisitorEntrance;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,32 +12,17 @@ import lombok.Setter;
 public class VisitorEntranceDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     
-    private Long id;
+    @NotBlank
+    @Size(min = 9, max = 11)
+    private String document;
     private String carModel;
+    @NotBlank
+    @Size(min = 7, max = 7)
     private String carPlate;
+    @NotBlank
+    @Size(max = 45)
     private String destiny;
+    @NotBlank
+    @Size(max = 45)
     private String wantedPeople;
-    private Instant entranceDate;
-
-    public VisitorEntranceDTO() {
-    }
-
-    public VisitorEntranceDTO(Long id, String carModel, String carPlate, String destiny, 
-                            String wantedPeople, Instant entranceDate) {
-        this.id = id;
-        this.carModel = carModel;
-        this.carPlate = carPlate;
-        this.destiny = destiny;
-        this.wantedPeople = wantedPeople;
-        this.entranceDate = entranceDate;
-    }
-
-    public VisitorEntranceDTO(VisitorEntrance entity) {
-        this.id = entity.getId();
-        this.carModel = entity.getCarModel();
-        this.carPlate = entity.getCarPlate();
-        this.destiny = entity.getDestiny();
-        this.wantedPeople = entity.getWantedPeople();
-        this.entranceDate = entity.getEntranceDate();
-    }
 }

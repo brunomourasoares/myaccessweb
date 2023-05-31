@@ -1,7 +1,7 @@
 package com.myaccessweb.models;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,13 +24,8 @@ public class VisitorExit implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
-    private Instant createDate;
+    private LocalDateTime createDate;
 
     public VisitorExit() {
-    }
-
-    public VisitorExit(Long id, Instant createDate) {
-        this.id = id;
-        this.createDate = createDate;
     }
 }
