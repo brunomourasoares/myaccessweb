@@ -1,10 +1,11 @@
 package com.myaccessweb.repositories;
 
+import java.util.UUID;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.myaccessweb.models.User;
 
-public interface UserRepository extends JpaRepository<User, Long> {
-    boolean existsByUsername(String username);
+public interface UserRepository extends JpaRepository<User, UUID> {
     boolean existsByEmail(String email);
 }

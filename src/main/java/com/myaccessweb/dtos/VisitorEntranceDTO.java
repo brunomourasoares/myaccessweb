@@ -4,11 +4,7 @@ import java.io.Serializable;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class VisitorEntranceDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     
