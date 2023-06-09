@@ -27,6 +27,8 @@ public class User implements Serializable {
     private LocalDateTime createDate;
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime updateDate;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private LocalDateTime loginDate;
     @Column(nullable = false, columnDefinition="TINYINT DEFAULT 0")
     private Boolean blocked;
 
@@ -34,12 +36,13 @@ public class User implements Serializable {
     }
 
     public User(UUID id, String email, String password, LocalDateTime createDate, LocalDateTime updateDate,
-            Boolean blocked) {
+            LocalDateTime loginDate, Boolean blocked) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.createDate = createDate;
         this.updateDate = updateDate;
+        this.loginDate = loginDate;
         this.blocked = blocked;
     }
 
@@ -81,6 +84,14 @@ public class User implements Serializable {
 
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
+    }
+    
+    public LocalDateTime getLoginDate() {
+        return loginDate;
+    }
+
+    public void setLoginDate(LocalDateTime loginDate) {
+        this.loginDate = loginDate;
     }
 
     public Boolean getBlocked() {

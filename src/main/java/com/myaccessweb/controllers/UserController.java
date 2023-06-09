@@ -61,6 +61,7 @@ public class UserController {
         BeanUtils.copyProperties(userRecordDTO, user);
         user.setCreateDate(LocalDateTime.now(ZoneId.of("UTC")));
         user.setUpdateDate(null);
+        user.setLoginDate(null);
         user.setBlocked(false);
         userService.createUser(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
@@ -89,6 +90,7 @@ public class UserController {
         user.setEmail(userOptional.get().getEmail());
         user.setCreateDate(userOptional.get().getCreateDate());
         user.setUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
+        user.setLoginDate(userOptional.get().getLoginDate());
         return ResponseEntity.status(HttpStatus.OK).body(userService.createUser(user));
     }
 }

@@ -10,8 +10,6 @@ import com.myaccessweb.models.Visitor;
 
 public interface VisitorRepository extends JpaRepository<Visitor, UUID> {
     Boolean existsByDocument(String document);
-
-    //@Query(nativeQuery= true, value="SELECT * FROM tb_visitor WHERE document = ?")
     List<Visitor> findByDocumentLike(String partialDocument);
     List<Visitor> findByFullNameContainingIgnoreCase(String partialName);
 }

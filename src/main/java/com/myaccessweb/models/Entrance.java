@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_entrance")
-public class VisitorEntrance implements Serializable {
+public class Entrance implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -32,10 +32,10 @@ public class VisitorEntrance implements Serializable {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime entranceDate;
 
-    public VisitorEntrance() {
+    public Entrance() {
     }
 
-    public VisitorEntrance(UUID id, String document, String carModel, String carPlate, String destiny, String wantedPeople, LocalDateTime entranceDate) {
+    public Entrance(UUID id, String document, String carModel, String carPlate, String destiny, String wantedPeople, LocalDateTime entranceDate) {
         this.id = id;
         this.document = document;
         this.carModel = carModel;
@@ -117,7 +117,7 @@ public class VisitorEntrance implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        VisitorEntrance other = (VisitorEntrance) obj;
+        Entrance other = (Entrance) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
