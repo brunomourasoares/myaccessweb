@@ -1,6 +1,5 @@
 package com.myaccessweb.controllers;
 
-import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.myaccessweb.dtos.VisitorRecordDTO;
 import com.myaccessweb.dtos.VisitorUpdateRecordDTO;
@@ -66,8 +64,7 @@ public class VisitorController {
         visitor.setBlocked(false);
         visitor.setPhotoUrl(null);
         visitorService.createVisitor(visitor);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(visitor.getId()).toUri();
-        return ResponseEntity.created(uri).body(visitor);
+        return ResponseEntity.status(HttpStatus.CREATED).body(visitor);
     }
 
     @DeleteMapping("/{id}")

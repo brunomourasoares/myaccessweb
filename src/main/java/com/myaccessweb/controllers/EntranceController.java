@@ -1,6 +1,5 @@
 package com.myaccessweb.controllers;
 
-import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.myaccessweb.dtos.EntranceRecordDTO;
 import com.myaccessweb.models.Entrance;
@@ -41,13 +39,13 @@ public class EntranceController {
     private VisitorService visitorService;
 
     @GetMapping
-    public ResponseEntity<Page<Entrance>> findAllEntrances(@PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<Entrance>> findAllEntrances(@PageableDefault(page = 0, size = 5, sort = "entranceId", direction = Sort.Direction.ASC) Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(entranceService.findAllEntrancePaged(pageable));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> findOneEntrance(@PathVariable UUID id) {
-        Optional<Entrance> entranceOptional = entranceService.findOneEntrance(id);
+    @GetMapping("/{entranceId}")
+    public ResponseEntity<Object> findOneEntrance(@PathVariable UUID entranceId) {
+        Optional<Entrance> entranceOptional = entranceService.findOneEntranceById(entranceId);
         if (entranceOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entrance not found!");
         }
@@ -57,21 +55,20 @@ public class EntranceController {
     @PostMapping
     public ResponseEntity<Object> createEntrance(@RequestBody @Valid EntranceRecordDTO entranceRecordDTO) {
         if (!visitorService.existsByDocument(entranceRecordDTO.document())) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Document not found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entrance not found!");
         }
         var entrance = new Entrance();
         BeanUtils.copyProperties(entranceRecordDTO, entrance);
         entrance.setEntranceDate(LocalDateTime.now(ZoneId.of("UTC")));
         entranceService.createEntrance(entrance);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(entrance.getId()).toUri();
-        return ResponseEntity.created(uri).body(entrance);
+        return ResponseEntity.status(HttpStatus.CREATED).body(entrance);
     }
 
-    @GetMapping("/doc/{partialDocument}")
-    public ResponseEntity<Object> listEntranceByPartialDocument(@PathVariable String partialDocument) {
-        List<Entrance> entranceList = entranceService.findByDocumentLike(partialDocument);
+    @GetMapping("/doc/{document}")
+    public ResponseEntity<Object> listEntranceByDocument(@PathVariable String document) {
+        List<Entrance> entranceList = entranceService.findAllEntranceByDocument(document);
         if (entranceList.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Document not found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entrance not found!");
         }
         return ResponseEntity.status(HttpStatus.OK).body(entranceList);
     }

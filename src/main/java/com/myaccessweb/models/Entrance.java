@@ -18,7 +18,7 @@ public class Entrance implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private UUID entranceId;
     @Column(nullable = false, length = 11)
     private String document;
     @Column(length = 45)
@@ -35,8 +35,8 @@ public class Entrance implements Serializable {
     public Entrance() {
     }
 
-    public Entrance(UUID id, String document, String carModel, String carPlate, String destiny, String wantedPeople, LocalDateTime entranceDate) {
-        this.id = id;
+    public Entrance(UUID entranceId, String document, String carModel, String carPlate, String destiny, String wantedPeople, LocalDateTime entranceDate) {
+        this.entranceId = entranceId;
         this.document = document;
         this.carModel = carModel;
         this.carPlate = carPlate;
@@ -45,12 +45,12 @@ public class Entrance implements Serializable {
         this.entranceDate = entranceDate;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getEntranceId() {
+        return entranceId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setEntranceId(UUID entranceId) {
+        this.entranceId = entranceId;
     }
 
     public String getDocument() {
@@ -105,7 +105,7 @@ public class Entrance implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((entranceId == null) ? 0 : entranceId.hashCode());
         return result;
     }
 
@@ -118,10 +118,10 @@ public class Entrance implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         Entrance other = (Entrance) obj;
-        if (id == null) {
-            if (other.id != null)
+        if (entranceId == null) {
+            if (other.entranceId != null)
                 return false;
-        } else if (!id.equals(other.id))
+        } else if (!entranceId.equals(other.entranceId))
             return false;
         return true;
     }
