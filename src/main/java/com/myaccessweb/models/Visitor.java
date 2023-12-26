@@ -22,15 +22,14 @@ public class Visitor implements Serializable {
     @Column(nullable = false, unique = true, length = 11)
     private String document;
     @Column(nullable = false, length = 45)
-    private String fullName;
+    private String name;
     @Column(nullable = false, length = 15)
     private String gender;
     @Column(nullable = false, length = 11)
     private String contactNumber;
     private String company;
-    @Column(nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @Column(nullable = false)
     private LocalDateTime createDate;
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime updateDate;
     @Column(columnDefinition = "TEXT")
     private String observation;
@@ -41,11 +40,11 @@ public class Visitor implements Serializable {
     public Visitor() {
     }
 
-    public Visitor(UUID id, String document, String fullName, String gender, String contactNumber, String company, 
+    public Visitor(UUID id, String document, String name, String gender, String contactNumber, String company, 
                     LocalDateTime createDate, LocalDateTime updateDate, String observation, Boolean blocked, String photoUrl) {
         this.id = id;
         this.document = document;
-        this.fullName = fullName;
+        this.name = name;
         this.gender = gender;
         this.contactNumber = contactNumber;
         this.company = company;
@@ -72,12 +71,12 @@ public class Visitor implements Serializable {
         this.document = document;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getName() {
+        return name;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getGender() {

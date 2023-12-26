@@ -2,9 +2,7 @@ package com.myaccessweb.services;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,15 +14,22 @@ import com.myaccessweb.repositories.VisitorRepository;
 @Service
 public class VisitorService {
 
-    @Autowired
     private VisitorRepository visitorRepository;
 
-    public Page<Visitor> findAllVisitorPaged(Pageable pageable) {
+    public VisitorService(VisitorRepository visitorRepository) {
+        this.visitorRepository = visitorRepository;
+    }
+
+    public Page<Visitor> getVisitorListPageable(Pageable pageable) {
         return visitorRepository.findAll(pageable);
     }
 
-    public Optional<Visitor> findOneVisitor(UUID id) {
-        return visitorRepository.findById(id);
+    public Optional<Visitor> getVisitorByDocument(String document) {
+        return visitorRepository.findByDocument(document);
+    }
+
+    public boolean existByDocument(String document) {
+        return visitorRepository.existsByDocument(document);
     }
 
     @Transactional
@@ -37,15 +42,11 @@ public class VisitorService {
         visitorRepository.delete(visitor);
     }
 
-    public boolean existsByDocument(String document) {
-        return visitorRepository.existsByDocument(document);
-    }
-
-    public List<Visitor> findByDocumentLike(String partialDocument) {
+    public List<Visitor> getByDocumentLike(String partialDocument) {
         return visitorRepository.findByDocumentLike("%"+partialDocument+"%");
     }
 
-    public List<Visitor> findByFullNameContainingIgnoreCase(String partialName) {
-        return visitorRepository.findByFullNameContainingIgnoreCase(partialName);
+    public List<Visitor> getNameByContainingIgnoreCase(String partialName) {
+        return visitorRepository.findByNameContainingIgnoreCase(partialName);
     }
 }

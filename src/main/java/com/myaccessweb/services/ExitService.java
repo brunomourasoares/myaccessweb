@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,27 +15,30 @@ import com.myaccessweb.repositories.ExitRepository;
 @Service
 public class ExitService {
 
-    @Autowired
     private ExitRepository exitRepository;
+
+    public ExitService(ExitRepository exitRepository) {
+        this.exitRepository = exitRepository;
+    }
 
     @Transactional
     public Exit createExit(Exit exit) {
         return exitRepository.save(exit);
     }
 
-    public Page<Exit> findAllExitsPaged(Pageable pageable) {
+    public Page<Exit> getExitListPageable(Pageable pageable) {
         return exitRepository.findAll(pageable);
     }
 
-    public List<Exit> findAllExitByDocument(String document) {
+    public List<Exit> getExitListByDocument(String document) {
         return exitRepository.findByDocument(document);
     }
 
-    public Optional<Exit> findOneExitById(UUID exitId) {
+    public Optional<Exit> getExitById(UUID exitId) {
         return exitRepository.findById(exitId);
     }
 
-    public Optional<Exit> findExitByEntranceId(UUID entranceId) {
+    public Optional<Exit> getExitByEntranceId(UUID entranceId) {
         return exitRepository.findByEntranceId(entranceId);
     }
 }

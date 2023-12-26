@@ -3,10 +3,8 @@ package com.myaccessweb.controllers;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,33 +25,42 @@ import com.myaccessweb.dtos.UserUpdateRecordDTO;
 import com.myaccessweb.models.User;
 import com.myaccessweb.services.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Users", description = "UserController.java")
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
     
-    @Autowired
     private UserService userService;
 
-    @GetMapping
-    public ResponseEntity<Page<User>> findAllUser(@PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.findAllUserPaged(pageable));
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> findOneUser(@PathVariable UUID id) {
-        Optional<User> userOptional = userService.findOneUser(id);
+    @Operation(summary = "Find all users ordered by email (max 20 per page)", description = "* Method: getAllUsersPageable")
+    @GetMapping
+    public ResponseEntity<Page<User>> getAllUsersPageable(@PageableDefault(page = 0, size = 20, sort = "email", direction = Sort.Direction.ASC) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserListPageable(pageable));
+    }
+
+    @Operation(summary = "Find one user by email", description = "* Method: getUserByEmail")
+    @GetMapping("/{email}")
+    public ResponseEntity<Object> getUserByEmail(@PathVariable String email) {
+        Optional<User> userOptional = userService.getUserByEmail(email);
         if (userOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
         }
         return ResponseEntity.status(HttpStatus.OK).body(userOptional.get());
     }
 
+    @Operation(summary = "Create one user", description = "* Method: createUser")
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody @Valid UserRecordDTO userRecordDTO) {
-        if (userService.existsByEmail(userRecordDTO.email())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("E-mail already registered!");
+        if (userService.existByEmail(userRecordDTO.email())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("E-mail already registered!");
         }
         var user = new User();
         BeanUtils.copyProperties(userRecordDTO, user);
@@ -65,9 +72,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUser(@PathVariable UUID id) {
-        Optional<User> userOptional = userService.findOneUser(id);
+    @Operation(summary = "Delete one user by email", description = "* Method: deleteUser")
+    @DeleteMapping("/{email}")
+    public ResponseEntity<Object> deleteUser(@PathVariable String email) {
+        Optional<User> userOptional = userService.getUserByEmail(email);
         if (userOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
         }
@@ -75,9 +83,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully!");
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable UUID id, @RequestBody @Valid UserUpdateRecordDTO userUpdateRecordDTO) {
-        Optional<User> userOptional = userService.findOneUser(id);
+    @Operation(summary = "Update one user by email", description = "* Method: updateUser")
+    @PutMapping("/{email}")
+    public ResponseEntity<Object> updateUser(@PathVariable String email, @RequestBody @Valid UserUpdateRecordDTO userUpdateRecordDTO) {
+        Optional<User> userOptional = userService.getUserByEmail(email);
         if (userOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
         }

@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -32,20 +31,22 @@ import jakarta.validation.Valid;
 @RequestMapping(value = "/entrances")
 public class EntranceController {
     
-    @Autowired
     private EntranceService entranceService;
-
-    @Autowired
     private VisitorService visitorService;
 
+    public EntranceController(EntranceService entranceService, VisitorService visitorService) {
+        this.entranceService = entranceService;
+        this.visitorService = visitorService;
+    }
+
     @GetMapping
-    public ResponseEntity<Page<Entrance>> findAllEntrances(@PageableDefault(page = 0, size = 5, sort = "entranceId", direction = Sort.Direction.ASC) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(entranceService.findAllEntrancePaged(pageable));
+    public ResponseEntity<Page<Entrance>> getAllEntrancesPageable(@PageableDefault(page = 0, size = 20, sort = "entranceDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(entranceService.getEntranceListPageable(pageable));
     }
 
     @GetMapping("/{entranceId}")
-    public ResponseEntity<Object> findOneEntrance(@PathVariable UUID entranceId) {
-        Optional<Entrance> entranceOptional = entranceService.findOneEntranceById(entranceId);
+    public ResponseEntity<Object> getEntranceById(@PathVariable UUID entranceId) {
+        Optional<Entrance> entranceOptional = entranceService.getEntranceById(entranceId);
         if (entranceOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entrance not found!");
         }
@@ -54,7 +55,7 @@ public class EntranceController {
 
     @PostMapping
     public ResponseEntity<Object> createEntrance(@RequestBody @Valid EntranceRecordDTO entranceRecordDTO) {
-        if (!visitorService.existsByDocument(entranceRecordDTO.document())) {
+        if (!visitorService.existByDocument(entranceRecordDTO.document())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entrance not found!");
         }
         var entrance = new Entrance();
@@ -64,9 +65,9 @@ public class EntranceController {
         return ResponseEntity.status(HttpStatus.CREATED).body(entrance);
     }
 
-    @GetMapping("/doc/{document}")
-    public ResponseEntity<Object> listEntranceByDocument(@PathVariable String document) {
-        List<Entrance> entranceList = entranceService.findAllEntranceByDocument(document);
+    @GetMapping("/doc/{visitorDocument}")
+    public ResponseEntity<Object> getAllEntrancesByDocument(@PathVariable String visitorDocument) {
+        List<Entrance> entranceList = entranceService.getEntranceListByDocument(visitorDocument);
         if (entranceList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entrance not found!");
         }

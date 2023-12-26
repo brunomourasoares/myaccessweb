@@ -13,43 +13,25 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_exit")
-public class Exit implements Serializable {
+public class Exit extends Flow implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID exitId;
-    @Column(nullable = false, length = 11)
-    private String document;
-    @Column(length = 45)
-    private String carModel;
-    @Column(length = 7)
-    private String carPlate;
-    @Column(nullable = false, length = 45)
-    private String destiny;
-    @Column(nullable = false, length = 45)
-    private String wantedPeople;
-    @Column(nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @Column(nullable = false)
     private LocalDateTime exitDate;
     @Column(nullable = false)
     private UUID entranceId;
-    @Column(nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private LocalDateTime entranceDate;
     
     public Exit() {
     }
 
-    public Exit(UUID exitId, String document, String carModel, String carPlate, String destiny, String wantedPeople,
-            LocalDateTime exitDate, UUID entranceId, LocalDateTime entranceDate) {
+    public Exit(UUID exitId, String document, String carModel, String carPlate, String destination, String wantedPeople, LocalDateTime exitDate, UUID entranceId) {
+        super(document, carModel, carPlate, destination, wantedPeople);
         this.exitId = exitId;
-        this.document = document;
-        this.carModel = carModel;
-        this.carPlate = carPlate;
-        this.destiny = destiny;
-        this.wantedPeople = wantedPeople;
         this.exitDate = exitDate;
         this.entranceId = entranceId;
-        this.entranceDate = entranceDate;
     }
 
     public UUID getExitId() {
@@ -58,46 +40,6 @@ public class Exit implements Serializable {
     
     public void setExitId(UUID exitId) {
         this.exitId = exitId;
-    }
-
-    public String getDocument() {
-        return document;
-    }
-
-    public void setDocument(String document) {
-        this.document = document;
-    }
-
-    public String getCarModel() {
-        return carModel;
-    }
-
-    public void setCarModel(String carModel) {
-        this.carModel = carModel;
-    }
-
-    public String getCarPlate() {
-        return carPlate;
-    }
-
-    public void setCarPlate(String carPlate) {
-        this.carPlate = carPlate;
-    }
-
-    public String getDestiny() {
-        return destiny;
-    }
-
-    public void setDestiny(String destiny) {
-        this.destiny = destiny;
-    }
-
-    public String getWantedPeople() {
-        return wantedPeople;
-    }
-
-    public void setWantedPeople(String wantedPeople) {
-        this.wantedPeople = wantedPeople;
     }
 
     public LocalDateTime getExitDate() {
@@ -114,14 +56,6 @@ public class Exit implements Serializable {
 
     public void setEntranceId(UUID entranceId) {
         this.entranceId = entranceId;
-    }
-
-    public LocalDateTime getEntranceDate() {
-        return entranceDate;
-    }
-
-    public void setEntranceDate(LocalDateTime entranceDate) {
-        this.entranceDate = entranceDate;
     }
 
     @Override

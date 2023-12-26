@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,23 +15,26 @@ import com.myaccessweb.repositories.EntranceRepository;
 @Service
 public class EntranceService {
 
-    @Autowired
     private EntranceRepository entranceRepository;
 
-    public Page<Entrance> findAllEntrancePaged(Pageable pageable) {
+    public EntranceService(EntranceRepository entranceRepository) {
+        this.entranceRepository = entranceRepository;
+    }
+
+    public Page<Entrance> getEntranceListPageable(Pageable pageable) {
         return entranceRepository.findAll(pageable);
     }
 
-    public List<Entrance> findAllEntranceByDocument(String document) {
+    public List<Entrance> getEntranceListByDocument(String document) {
         return entranceRepository.findByDocument(document);
     }
 
-    public Optional<Entrance> findOneEntranceById(UUID id) {
+    public Optional<Entrance> getEntranceById(UUID id) {
         return entranceRepository.findById(id);
     }
 
-    public Optional<Entrance> findLastEntranceByDocument(String document) {
-        return entranceRepository.findLastEntranceByDocument(document);
+    public Optional<Entrance> getLastEntranceByDocument(String document) {
+        return entranceRepository.getLastEntranceByDocument(document);
     }
 
     @Transactional

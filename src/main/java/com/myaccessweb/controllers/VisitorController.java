@@ -4,10 +4,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,34 +26,42 @@ import com.myaccessweb.dtos.VisitorUpdateRecordDTO;
 import com.myaccessweb.models.Visitor;
 import com.myaccessweb.services.VisitorService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-
+@Tag(name = "Visitors", description = "VisitorController.java")
 @RestController
 @RequestMapping("/visitors")
 public class VisitorController {
     
-    @Autowired
     private VisitorService visitorService;
 
-    @GetMapping
-    public ResponseEntity<Page<Visitor>> findAllVisitor(@PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(visitorService.findAllVisitorPaged(pageable));
+    public VisitorController(VisitorService visitorService) {
+        this.visitorService = visitorService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> findOneVisitor(@PathVariable UUID id) {
-        Optional<Visitor> visitorOptional = visitorService.findOneVisitor(id);
+    @Operation(summary = "Find all visitors ordered by name (max 20 per page)", description = "* Method: getAllVisitorsPageable")
+    @GetMapping
+    public ResponseEntity<Page<Visitor>> getAllVisitorsPageable (@PageableDefault(page = 0, size = 20, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(visitorService.getVisitorListPageable(pageable));
+    }
+
+    @Operation(summary = "Find one visitor by document", description = "* Method: getVisitorByDocument")
+    @GetMapping("/{document}")
+    public ResponseEntity<Object> getVisitorByDocument(@PathVariable String document) {
+        Optional<Visitor> visitorOptional = visitorService.getVisitorByDocument(document);
         if (visitorOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Visitor not found!");
         }
         return ResponseEntity.status(HttpStatus.OK).body(visitorOptional.get());
     }
 
+    @Operation(summary = "Create one visitor", description = "* Method: createVisitor")
     @PostMapping
     public ResponseEntity<Object> createVisitor(@RequestBody @Valid VisitorRecordDTO visitorRecordDTO) {
-        if (visitorService.existsByDocument(visitorRecordDTO.document())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Document already registered!");
+        if (visitorService.existByDocument(visitorRecordDTO.document())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Document already registered!");
         }
         var visitor = new Visitor();
         BeanUtils.copyProperties(visitorRecordDTO, visitor);
@@ -67,9 +73,10 @@ public class VisitorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(visitor);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteVisitor(@PathVariable UUID id) {
-        Optional<Visitor> visitorOptional = visitorService.findOneVisitor(id);
+    @Operation(summary = "Delete one visitor by document", description = "* Method: deleteVisitor")
+    @DeleteMapping("/{document}")
+    public ResponseEntity<Object> deleteVisitor(@PathVariable String document) {
+        Optional<Visitor> visitorOptional = visitorService.getVisitorByDocument(document);
         if (visitorOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Visitor not found!");
         }
@@ -77,9 +84,10 @@ public class VisitorController {
         return ResponseEntity.status(HttpStatus.OK).body("Visitor deleted successfully!");
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateVisitor(@PathVariable UUID id, @RequestBody @Valid VisitorUpdateRecordDTO visitorUpdateRecordDTO) {
-        Optional<Visitor> visitorOptional = visitorService.findOneVisitor(id);
+    @Operation(summary = "Update one visitor by document", description = "* Method: updateVisitor")
+    @PutMapping("/{document}")
+    public ResponseEntity<Object> updateVisitor(@PathVariable String document, @RequestBody @Valid VisitorUpdateRecordDTO visitorUpdateRecordDTO) {
+        Optional<Visitor> visitorOptional = visitorService.getVisitorByDocument(document);
         if (visitorOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Visitor not found!");
         }
@@ -93,20 +101,22 @@ public class VisitorController {
         return ResponseEntity.status(HttpStatus.OK).body(visitorService.createVisitor(visitor));
     }
 
+    @Operation(summary = "Find all visitors with partial document", description = "* Method: getAllVisitorsByPartialDocument")
     @GetMapping("/doc/{partialDocument}")
-    public ResponseEntity<Object> listVisitorsByPartialDocument(@PathVariable String partialDocument) {
-        List<Visitor> visitorList = visitorService.findByDocumentLike(partialDocument);
+    public ResponseEntity<Object> getAllVisitorsByPartialDocument(@PathVariable String partialDocument) {
+        List<Visitor> visitorList = visitorService.getByDocumentLike(partialDocument);
         if (visitorList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Document not found!");
         }
         return ResponseEntity.status(HttpStatus.OK).body(visitorList);
     }
 
+    @Operation(summary = "Find all visitors with partial name", description = "* Method: getAllVisitorsByPartialName")
     @GetMapping("/name/{partialName}")
-    public ResponseEntity<Object> listVisitorsByPartialName(@PathVariable String partialName) {
-        List<Visitor> visitorList = visitorService.findByFullNameContainingIgnoreCase(partialName);
+    public ResponseEntity<Object> getAllVisitorsByPartialName(@PathVariable String partialName) {
+        List<Visitor> visitorList = visitorService.getNameByContainingIgnoreCase(partialName);
         if (visitorList.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Full name not found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Name not found!");
         }
         return ResponseEntity.status(HttpStatus.OK).body(visitorList);
     }

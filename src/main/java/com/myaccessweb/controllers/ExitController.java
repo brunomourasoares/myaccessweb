@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,20 +32,23 @@ import jakarta.validation.Valid;
 @RequestMapping(value = "/exits")
 public class ExitController {
     
-    @Autowired
-    private ExitService exitService;
 
-    @Autowired
+    private ExitService exitService;
     private EntranceService entranceService;
 
+    public ExitController(ExitService exitService, EntranceService entranceService) {
+        this.exitService = exitService;
+        this.entranceService = entranceService;
+    }
+
     @GetMapping
-    public ResponseEntity<Page<Exit>> findAllExits(@PageableDefault(page = 0, size = 5, sort = "exitId", direction = Sort.Direction.ASC) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(exitService.findAllExitsPaged(pageable));
+    public ResponseEntity<Page<Exit>> getAllExitsPageable(@PageableDefault(page = 0, size = 20, sort = "exitDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(exitService.getExitListPageable(pageable));
     }
 
     @GetMapping("/{exitId}")
-    public ResponseEntity<Object> findOneEntrance(@PathVariable UUID exitId) {
-        Optional<Exit> exitOptional = exitService.findOneExitById(exitId);
+    public ResponseEntity<Object> getExitById(@PathVariable UUID exitId) {
+        Optional<Exit> exitOptional = exitService.getExitById(exitId);
         if (exitOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entrance not found!");
         }
@@ -55,11 +57,11 @@ public class ExitController {
 
     @PostMapping
     public ResponseEntity<Object> createExit(@RequestBody @Valid ExitRecordDTO exitRecordDTO) {
-        Optional<Entrance> entranceOptional = entranceService.findLastEntranceByDocument(exitRecordDTO.document());
+        Optional<Entrance> entranceOptional = entranceService.getLastEntranceByDocument(exitRecordDTO.document());
         if (entranceOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entrance not found!");
         }
-        Optional<Exit> exitOptional = exitService.findExitByEntranceId(entranceOptional.get().getEntranceId());
+        Optional<Exit> exitOptional = exitService.getExitByEntranceId(entranceOptional.get().getEntranceId());
         if (exitOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Need entrance first!");
         }
@@ -70,9 +72,9 @@ public class ExitController {
         return ResponseEntity.status(HttpStatus.CREATED).body(exit);
     }
 
-    @GetMapping("/doc/{document}")
-    public ResponseEntity<Object> listExitByDocument(@PathVariable String document) {
-        List<Exit> exitList = exitService.findAllExitByDocument(document);
+    @GetMapping("/doc/{visitorDocument}")
+    public ResponseEntity<Object> getAllExitsByDocument(@PathVariable String visitorDocument) {
+        List<Exit> exitList = exitService.getExitListByDocument(visitorDocument);
         if (exitList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entrance not found!");
         }

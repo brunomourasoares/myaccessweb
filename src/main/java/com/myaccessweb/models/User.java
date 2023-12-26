@@ -23,13 +23,11 @@ public class User implements Serializable {
     private String email;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @Column(nullable = false)
     private LocalDateTime createDate;
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime updateDate;
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime loginDate;
-    @Column(nullable = false, columnDefinition="TINYINT DEFAULT 0")
+    @Column(nullable = false)
     private Boolean blocked;
 
     public User() {

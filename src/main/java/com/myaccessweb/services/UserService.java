@@ -1,9 +1,7 @@
 package com.myaccessweb.services;
 
 import java.util.Optional;
-import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,15 +13,22 @@ import com.myaccessweb.repositories.UserRepository;
 @Service
 public class UserService {
 
-    @Autowired
     private UserRepository userRepository;
 
-    public Page<User> findAllUserPaged(Pageable pageable) {
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public Page<User> getUserListPageable(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 
-    public Optional<User> findOneUser(UUID id) {
-        return userRepository.findById(id);
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public boolean existByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 
     @Transactional
@@ -34,9 +39,5 @@ public class UserService {
     @Transactional
     public void deleteUser(User user) {
         userRepository.delete(user);
-    }
-
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
     }
 }
