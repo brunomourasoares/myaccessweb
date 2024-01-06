@@ -21,7 +21,7 @@ if you need change
 ```
 src/main/resources/application-dev.properties
 ```
-> PS: you need create database first, import_mysql.sql is used for create users, visitors, entrances and exits!>
+> PS: you need create database first, mysql.sql is used for create users, visitors, entrances and exits!>
 
 - *MyAccessWeb Users*
 ```
@@ -29,6 +29,14 @@ admin: admin@email.com password: admin
 user1: user1@email.com password: user1
 user2: user2@email.com password: user2
 user3: user3@email.com password: user3
+```
+
+- *Visitors*
+```
+Mary Jane ID: 12345678910
+Suzy Crowford ID: 12345678911
+Max Samuel ID: 12345678912
+John Travolta ID: 12345678913
 ```
 
 ### 🌐 Socials:
