@@ -56,6 +56,12 @@ http://localhost:8080/actuator
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2.svg?style=social&logo=linkedin&logoColor=0A66C2)](https://www.linkedin.com/in/brunomsoares/)
 
 ### 📷 Screenshots:
-<a href="#" target="_blank" title=""><img src="#" alt="Screenshot 1"/></a> <a href="#" target="_blank" title=""><img src="#" alt="Screenshot 2"/></a> <a href="#" target="_blank" title=""><img src="#" alt="Screenshot 3"/></a> \
-<a href="#" target="_blank" title=""><img src="#" alt="Screenshot 4"/></a> <a href="#" target="_blank" title=""><img src="#" alt="Screenshot 5"/></a> <a href="#" target="_blank" title=""><img src="#" alt="Screenshot 6"/></a> \
-<a href="#" target="_blank" title=""><img src="#" alt="Screenshot 7"/></a> <a href="#" target="_blank" title=""><img src="#" alt="Screenshot 8"/></a> <a href="#" target="_blank" title=""><img src="#" alt="Screenshot 9"/></a>
+<a href="#" target="_blank" title=""><img src="#" alt=""/></a> 
+<a href="#" target="_blank" title=""><img src="#" alt=""/></a> 
+<a href="#" target="_blank" title=""><img src="#" alt=""/></a> \
+<a href="#" target="_blank" title=""><img src="#" alt=""/></a> 
+<a href="#" target="_blank" title=""><img src="#" alt=""/></a> 
+<a href="#" target="_blank" title=""><img src="#" alt=""/></a> \
+<a href="#" target="_blank" title=""><img src="#" alt=""/></a> 
+<a href="#" target="_blank" title=""><img src="#" alt=""/></a> 
+<a href="#" target="_blank" title=""><img src="#" alt=""/></a>

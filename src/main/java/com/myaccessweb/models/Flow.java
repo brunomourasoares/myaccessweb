@@ -1,7 +1,5 @@
 package com.myaccessweb.models;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 

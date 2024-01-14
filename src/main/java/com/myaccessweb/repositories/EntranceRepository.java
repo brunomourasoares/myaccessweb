@@ -11,6 +11,7 @@ import com.myaccessweb.models.Entrance;
 
 public interface EntranceRepository extends JpaRepository<Entrance, UUID> {
 
+    @Query(value = "SELECT * FROM tb_entrance WHERE document = ? ORDER BY entrance_date DESC", nativeQuery = true)
     List<Entrance> findByDocument(String document);
     @Query(value = "SELECT * FROM tb_entrance WHERE document = ? ORDER BY entrance_date DESC LIMIT 1", nativeQuery = true)
     Optional<Entrance> getLastEntranceByDocument(String document);

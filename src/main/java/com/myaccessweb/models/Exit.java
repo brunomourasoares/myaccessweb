@@ -23,7 +23,7 @@ public class Exit extends Flow implements Serializable {
     private LocalDateTime exitDate;
     @Column(nullable = false)
     private UUID entranceId;
-    
+
     public Exit() {
     }
 
@@ -54,7 +54,7 @@ public class Exit extends Flow implements Serializable {
         return entranceId;
     }
 
-    public void setEntranceId(UUID entranceId) {
+    public void setEntrance(UUID entranceId) {
         this.entranceId = entranceId;
     }
 

@@ -101,7 +101,7 @@ public class VisitorController {
         return ResponseEntity.status(HttpStatus.OK).body(visitorService.createVisitor(visitor));
     }
 
-    @Operation(summary = "Find all visitors with partial document", description = "* Method: getAllVisitorsByPartialDocument")
+    @Operation(summary = "Visitors list with partial document", description = "* Method: getAllVisitorsByPartialDocument")
     @GetMapping("/doc/{partialDocument}")
     public ResponseEntity<Object> getAllVisitorsByPartialDocument(@PathVariable String partialDocument) {
         List<Visitor> visitorList = visitorService.getByDocumentLike(partialDocument);
@@ -111,7 +111,7 @@ public class VisitorController {
         return ResponseEntity.status(HttpStatus.OK).body(visitorList);
     }
 
-    @Operation(summary = "Find all visitors with partial name", description = "* Method: getAllVisitorsByPartialName")
+    @Operation(summary = "Visitors list with partial name", description = "* Method: getAllVisitorsByPartialName")
     @GetMapping("/name/{partialName}")
     public ResponseEntity<Object> getAllVisitorsByPartialName(@PathVariable String partialName) {
         List<Visitor> visitorList = visitorService.getNameByContainingIgnoreCase(partialName);

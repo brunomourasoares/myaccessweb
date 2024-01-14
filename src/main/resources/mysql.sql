@@ -5,11 +5,10 @@ INSERT INTO tb_entrance (entrance_id, document, car_model, car_plate, destinatio
 INSERT INTO tb_entrance (entrance_id, document, car_model, car_plate, destination, wanted_people, entrance_date) VALUES (random_uuid(), '12345678914', 'Fiat Palio', 'FGH1234', 'Bloco 20 Ap 201', 'Inda', NOW());
 INSERT INTO tb_entrance (entrance_id, document, car_model, car_plate, destination, wanted_people, entrance_date) VALUES (random_uuid(), '12345678915', 'Chevrolet Opala', 'VBN1234', 'Bloco 20 Ap 201', 'Flavio', NOW());
 
-INSERT INTO tb_visitor (id, document, name, gender, contact_number, company, create_date, update_date, observation, blocked, photo_url) VALUES (random_uuid(), '12345678910', 'Bruno Moura Soares', 'Male', '12345678910', '', NOW(), NULL, '', false, '');
-INSERT INTO tb_visitor (id, document, name, gender, contact_number, company, create_date, update_date, observation, blocked, photo_url) VALUES (random_uuid(), '12345678911', 'Jose Carlos Porto Soares', 'Male', '12345678910', '', NOW(), NULL, '', false, '');
-INSERT INTO tb_visitor (id, document, name, gender, contact_number, company, create_date, update_date, observation, blocked, photo_url) VALUES (random_uuid(), '12345678912', 'Vera Lucia Moura Soares', 'Female', '12345678910', '', NOW(), NULL, '', false, '');
-INSERT INTO tb_visitor (id, document, name, gender, contact_number, company, create_date, update_date, observation, blocked, photo_url) VALUES (random_uuid(), '12345678913', 'Douglas Moura Soares', 'Male', '12345678910', '', NOW(), NULL, '', false, '');
-
+INSERT INTO tb_visitor (id, document, name, gender, contact_number, company, create_date, update_date, observation, blocked, photo_url) VALUES (0x036e092861c14abba674634b8910d283, '12345678910', 'Mary Jane', 'Female', '12345678910', '', '2023-12-26 05:04:01.000000', NULL, '', false, '');
+INSERT INTO tb_visitor (id, document, name, gender, contact_number, company, create_date, update_date, observation, blocked, photo_url) VALUES (0x29d47023d9874990ad681a28d5f9a831, '12345678911', 'Suzy Crowford', 'Female', '12345678910', '', '2023-12-26 06:18:23.000000', NULL, '', false, '');
+INSERT INTO tb_visitor (id, document, name, gender, contact_number, company, create_date, update_date, observation, blocked, photo_url) VALUES (0x6babf75ff758479c96e7fb2dba238704, '12345678912', 'Max Samuel', 'Female', '12345678910', '', '2023-12-26 07:11:34.000000', NULL, '', false, '');
+INSERT INTO tb_visitor (id, document, name, gender, contact_number, company, create_date, update_date, observation, blocked, photo_url) VALUES (0xe8da879d2ac44a7a95990a1ca779cba9, '12345678913', 'John Travolta', 'Male', '12345678910', '', '2023-12-26 08:54:42.000000', NULL, '', false, '');
 
 INSERT INTO tb_user (id, email, password, create_date, update_date, login_date, blocked) VALUES (0xc337f53e94c949689cd4e06b45b1c5c8, 'admin@email.com', 'admin', '2023-12-22 01:29:11.697558', NULL, NULL, b'0');
 INSERT INTO tb_user (id, email, password, create_date, update_date, login_date, blocked) VALUES (0x034e35dffceb4d01b8152c18e3779fe2, 'user1@email.com', 'user1', '2023-12-25 02:38:31.797558', NULL, NULL, b'0');
