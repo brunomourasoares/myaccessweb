@@ -1,5 +1,5 @@
-# 👮 MyAccessWeb
-MyAccessWeb is an RestAPI for access control, it is used to control the entrance and exit of visitors in a certain place. It has registration, update, delete, entry visitor and exit visitor.
+# 👮 MyAccess Web
+MyAccess Web is an RestAPI for access control, it is used to control the entrance and exit of visitors in a certain place. It has registration, update, delete, entry visitor and exit visitor.
 
 ### 💻 Technologies used:
 [![VSCode](https://img.shields.io/badge/VSCode-1.85.1-3F3F3F.svg?style=flat&labelColor=%23007ACC&logo=visualstudiocode&logoColor=white)](https://code.visualstudio.com/)
